@@ -1,0 +1,28 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://example.org/schemas/patient_state.schema.json",
+  "title":"PatientState",
+  "type":"object",
+  "required":["case_id","created_at","updated_at","state_version","observed_facts","derived_observations","hypotheses","evidence","missing_information","contradictions","uncertainty_notes","recommended_actions","safety_state","review_state","audit_ref"],
+  "properties":{
+    "case_id":{"type":"string","pattern":"^[A-Za-z0-9_-]+$"},
+    "created_at":{"type":"string","format":"date-time"},
+    "updated_at":{"type":"string","format":"date-time"},
+    "state_version":{"type":"integer","minimum":1},
+    "demographics":{"type":"object"},
+    "entities":{"type":"object"},
+    "observed_facts":{"type":"array","items":{"type":"object","required":["id","variable","value","source","timestamp","confidence","status"],"properties":{"id":{"type":"string"},"variable":{"type":"string"},"value":{},"unit":{"type":"string"},"source":{"type":"string"},"timestamp":{"type":"string","format":"date-time"},"confidence":{"type":"string","enum":["high","moderate","low"]},"status":{"const":"observed"}},"additionalProperties":false}},
+    "derived_observations":{"type":"array","items":{"type":"object","required":["id","variable","value","derivation_method","model_id","model_version","confidence","status"],"properties":{"id":{"type":"string"},"variable":{"type":"string"},"value":{},"derivation_method":{"type":"string"},"model_id":{"type":"string"},"model_version":{"type":"string"},"confidence":{"type":"string","enum":["high","moderate","low"]},"status":{"const":"derived_interpretation"}},"additionalProperties":false}},
+    "hypotheses":{"type":"array","items":{"type":"object","required":["id","diagnosis","supporting_findings","contradicting_findings","danger_level","current_confidence"],"properties":{"id":{"type":"string"},"diagnosis":{"type":"string"},"supporting_findings":{"type":"array","items":{"type":"string"}},"contradicting_findings":{"type":"array","items":{"type":"string"}},"missing_information":{"type":"array","items":{"type":"string"}},"danger_level":{"type":"string","enum":["low","moderate","high","cannot_exclude_dangerous"]},"evidence_sources":{"type":"array","items":{"type":"string"}},"current_confidence":{"type":"string","enum":["possible","likely","less_likely"]},"reasons_for_uncertainty":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}},
+    "evidence":{"type":"array","items":{"type":"object"}},
+    "missing_information":{"type":"array","items":{"type":"object","required":["variable","tier","rationale","priority"],"properties":{"variable":{"type":"string"},"tier":{"type":"integer","minimum":0,"maximum":5},"rationale":{"type":"string"},"priority":{"type":"integer","minimum":1}},"additionalProperties":false}},
+    "contradictions":{"type":"array","items":{"type":"object","required":["fields","description","resolution_status"],"properties":{"fields":{"type":"array","items":{"type":"string"}},"description":{"type":"string"},"resolution_status":{"type":"string"}},"additionalProperties":false}},
+    "uncertainty_notes":{"type":"array","items":{"type":"string"}},
+    "recommended_actions":{"type":"array","items":{"type":"object","required":["action","rationale","status"],"properties":{"action":{"type":"string"},"rationale":{"type":"string"},"status":{"const":"recommended_only"}},"additionalProperties":false}},
+    "safety_state":{"type":"string","enum":["NORMAL","EMERGENCY","HUMAN_REVIEW"]},
+    "review_state":{"type":"string","enum":["INFO_ONLY","MORE_INFORMATION_NEEDED","DIFFERENTIAL","HUMAN_REVIEW","EMERGENCY","ABSTAIN"]},
+    "outcome":{"type":["object","null"]},
+    "audit_ref":{"type":"string"}
+  },
+  "additionalProperties":false
+}
