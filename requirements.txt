@@ -1,0 +1,2 @@
+# Runtime intentionally uses Python standard library only.
+# No dependency is required for the core pipeline or tests.
